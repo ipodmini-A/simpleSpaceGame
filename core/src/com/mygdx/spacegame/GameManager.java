@@ -1,6 +1,5 @@
 package com.mygdx.spacegame;
 
-import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
 public class GameManager

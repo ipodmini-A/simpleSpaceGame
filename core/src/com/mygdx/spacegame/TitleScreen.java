@@ -6,10 +6,9 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 
-public class TitleScreen extends ScreenAdapter {
-
+public class TitleScreen extends ScreenAdapter
+{
     SpaceGame game;
-
     public TitleScreen(SpaceGame game) {
         this.game = game;
     }
@@ -27,7 +26,6 @@ public class TitleScreen extends ScreenAdapter {
             }
         });
     }
-
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, .25f, 0, 1);
@@ -38,7 +36,6 @@ public class TitleScreen extends ScreenAdapter {
         game.font.draw(game.batch, "Press space to play.", Gdx.graphics.getWidth() * .25f, Gdx.graphics.getHeight() * .25f);
         game.batch.end();
     }
-
     @Override
     public void hide(){
         Gdx.input.setInputProcessor(null);

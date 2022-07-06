@@ -17,8 +17,6 @@ public class SpaceShip
     ShapeRenderer pointer;
     float pointerPositionX;
     float pointerPositionY;
-    float speed = 10f;
-    float rate = 5f;
     float spaceShipPositionX;
     float spaceShipPositionY;
     float spaceShipMomentumXEast;
@@ -270,18 +268,16 @@ public class SpaceShip
         }
     }
 
-    //Yoooo it works
-    //
+    //Yoooo it works :O
+    //When the F key is pressed, a new Bullet is created, which is then added to the bullets array.
+    //See the class Bullet
     public void shipShooting()
     {
-
         if(Gdx.input.isKeyPressed(Input.Keys.F) )
         {
-
             Bullet b = new Bullet();
             b.position.set(pointerPositionX, pointerPositionY);
             bullets.add(b);
-
         }
     }
 
@@ -397,14 +393,16 @@ public class SpaceShip
     {
         this.bulletYSpeed = bulletYSpeed;
     }
-
+    //Class that controls how bullets function. Vector2 is used to calculate its position. Currently ShapeRenderer is
+    //used to render the actual bullet. A sprite will be used in the future, as well as changing the ShapeRenderer to
+    //an actual sprite.
     class Bullet
     {
         public Vector2 position;
         public float velocity;
         ShapeRenderer bulletCircle;
         int bulletDirection;
-
+        //When Bullet is created, it grabs the current ship direction to decide where the bullet will be shot.
         Bullet()
         {
             position = new Vector2();
@@ -434,7 +432,7 @@ public class SpaceShip
                     break;
             }
             bulletCircle.begin(ShapeRenderer.ShapeType.Filled);
-            bulletCircle.setColor(1, 1, 1, 1);
+            bulletCircle.setColor(1, 0, 0, 1);
             bulletCircle.circle(position.x, position.y, 5);
             bulletCircle.end();
 
