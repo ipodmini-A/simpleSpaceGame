@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.GL20;
 public class EndScreen extends ScreenAdapter {
 
     SpaceGame game;
+    boolean playerWon;
 
     public EndScreen(SpaceGame game) {
         this.game = game;
@@ -23,7 +24,12 @@ public class EndScreen extends ScreenAdapter {
 
                 if (keyCode == Input.Keys.ENTER) {
                     game.setScreen(new TitleScreen(game));
-                    GameScreen.setPlayerWasHit(false);
+                    if (playerWon = true)
+                    {
+                        SpaceGame.gameManager.setStages(SpaceGame.gameManager.getStages() + 1);
+                    }
+                    GameScreen.setAsteroidsHit(0);
+                    GameScreen.setPlayerIsDead(false);
                 }
 
                 return true;
@@ -36,7 +42,7 @@ public class EndScreen extends ScreenAdapter {
         Gdx.gl.glClearColor(.25f, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        if (GameScreen.playerWasHit == true)
+        if (GameScreen.playerIsDead == true)
         {
             game.batch.begin();
             game.font.draw(game.batch, "You lose!", Gdx.graphics.getWidth() * .25f, Gdx.graphics.getHeight() * .75f);
@@ -47,6 +53,7 @@ public class EndScreen extends ScreenAdapter {
             game.batch.begin();
             game.font.draw(game.batch, "You win!", Gdx.graphics.getWidth() * .25f, Gdx.graphics.getHeight() * .75f);
             game.font.draw(game.batch, "Press enter to restart.", Gdx.graphics.getWidth() * .25f, Gdx.graphics.getHeight() * .25f);
+            playerWon = true;
             game.batch.end();
         }
 

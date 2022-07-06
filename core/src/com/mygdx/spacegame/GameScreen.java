@@ -13,20 +13,22 @@ public class GameScreen extends ScreenAdapter {
     static SpaceShip spaceShip;
     static Asteroid[] asteroid;
     boolean asteroidsOff = false;
+    static boolean playerIsDead = false;
     static boolean playerWasHit = false;
+    static boolean playerIsInvincible = false;
     public GameScreen(SpaceGame game) {
         this.game = game;
     }
+    static int asteroidsHit = 0;
 
     @Override
     public void show() {
         spaceShip = new SpaceShip();
-        asteroid = new Asteroid[5];
-        asteroid[0] = new Asteroid();
-        asteroid[1] = new Asteroid();
-        asteroid[2] = new Asteroid();
-        asteroid[3] = new Asteroid();
-        asteroid[4] = new Asteroid();
+        asteroid = new Asteroid[SpaceGame.gameManager.getStages()];
+        for (int i = 0; i < SpaceGame.gameManager.getStages(); i++)
+        {
+            asteroid[i] = new Asteroid();
+        }
     }
 
     @Override
@@ -46,7 +48,7 @@ public class GameScreen extends ScreenAdapter {
         {
             for (int i = 0; i < asteroid.length; i++)
             {
-                if (asteroid[i].isLargeAsteroidHit() == false)
+                if (asteroid[i].isShowAsteroid() == true)
                 {
                     asteroid[i].asteroidRender();
                 }
@@ -61,22 +63,50 @@ public class GameScreen extends ScreenAdapter {
         game.font.draw(game.batch, "Bullet X Position" + spaceShip.getBulletXPosition(), Gdx.graphics.getWidth() * 0.05f, Gdx.graphics.getHeight() * .55f);
         game.font.draw(game.batch, "Bullet Y Position" + spaceShip.getBulletYPosition(), Gdx.graphics.getWidth() * 0.05f, Gdx.graphics.getHeight() * .45f);
         game.font.draw(game.batch, "Time Elapsed:" + game.gameManager.getElapsedTime(), Gdx.graphics.getWidth() * 0.05f, Gdx.graphics.getHeight() * .35f);
+        game.font.draw(game.batch, "Health:" + spaceShip.getHealth(), Gdx.graphics.getWidth() * 0.05f, Gdx.graphics.getHeight() * .25f);
+        game.font.draw(game.batch, "AsteroidsHit:" + asteroidsHit, Gdx.graphics.getWidth() * 0.05f, Gdx.graphics.getHeight() * .15f);
 
         game.batch.end();
 
-        if (asteroid[0].isLargeAsteroidHit() == true && asteroid[1].isLargeAsteroidHit() == true && asteroid[2].isLargeAsteroidHit() == true
-        && asteroid[3].isLargeAsteroidHit() == true && asteroid[4].isLargeAsteroidHit() == true)
+        for (int i = 0; i < SpaceGame.gameManager.getStages(); i++)
         {
-            game.setScreen(new EndScreen(game));
+            if (asteroid[i].isShowAsteroid() == false)
+            {
+                asteroid[i].setAsteroidX(-1000);
+                asteroid[i].setAsteroidY(-1000);
+            }
+        }
+
+        for (int i = 0; i < SpaceGame.gameManager.getStages(); i++)
+        {
+            if (asteroid[i].isLargeAsteroidHit() == true)
+            {
+                asteroidsHit++;
+                asteroid[i].setLargeAsteroidHit(false);
+                asteroid[i].setShowAsteroid(false);
+                asteroid[i].setLargeAsteroidHit(false);
+            }
+            if (asteroidsHit >= SpaceGame.gameManager.getStages())
+            {
+                game.setScreen(new EndScreen(game));
+            }
         }
 
         for (int k = 0; k < asteroid.length; k++)
         {
             if (asteroid[k].isAsteroidHitShip() == true)
             {
-                playerWasHit = true;
+                spaceShip.setHealth(spaceShip.getHealth() - 1);
+                asteroid[k].setAsteroidHitShip(false);
+                asteroid[k].setShowAsteroid(false);
+                asteroidsHit++;
+            }
+            if (spaceShip.getHealth() == 0 && playerIsInvincible == false)
+            {
+                playerIsDead = true;
                 game.setScreen(new EndScreen(game));
             }
+
         }
 
         for (int i = 0; i < SpaceShip.bullets.size; i++)
@@ -86,10 +116,21 @@ public class GameScreen extends ScreenAdapter {
                 if (Vector2.dst(SpaceShip.bullets.get(i).position.x, SpaceShip.bullets.get(i).position.y, asteroid[j].asteroidX, asteroid[j].asteroidY) < 10)
                 {
                     asteroid[j].setLargeAsteroidHit(true);
+                    asteroid[j].setShowAsteroid(false);
                 }
             }
         }
 
+    }
+
+    public static boolean isPlayerIsDead()
+    {
+        return playerIsDead;
+    }
+
+    public static void setPlayerIsDead(boolean playerIsDead)
+    {
+        GameScreen.playerIsDead = playerIsDead;
     }
 
     public static boolean isPlayerWasHit()
@@ -100,6 +141,26 @@ public class GameScreen extends ScreenAdapter {
     public static void setPlayerWasHit(boolean playerWasHit)
     {
         GameScreen.playerWasHit = playerWasHit;
+    }
+
+    public static boolean isPlayerIsInvincible()
+    {
+        return playerIsInvincible;
+    }
+
+    public static void setPlayerIsInvincible(boolean playerIsInvincible)
+    {
+        GameScreen.playerIsInvincible = playerIsInvincible;
+    }
+
+    public static int getAsteroidsHit()
+    {
+        return asteroidsHit;
+    }
+
+    public static void setAsteroidsHit(int asteroidsHit)
+    {
+        GameScreen.asteroidsHit = asteroidsHit;
     }
 
     @Override

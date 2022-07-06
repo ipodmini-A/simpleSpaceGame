@@ -15,6 +15,7 @@ public class SpaceShip
 {
     ShapeRenderer ship;
     ShapeRenderer pointer;
+    int health;
     float pointerPositionX;
     float pointerPositionY;
     float spaceShipPositionX;
@@ -34,6 +35,7 @@ public class SpaceShip
     Texture texture;
     Texture bulletTexture;
     int shipDirection;
+    int invincibleTime;
     float bulletXPosition;
     float bulletYPosition;
     float bulletXSpeed = 3;
@@ -54,6 +56,7 @@ public class SpaceShip
         position = new Vector2();
         spaceShipPositionX = 200;
         spaceShipPositionY = 100;
+        health = 3;
         bullets = new Array<Bullet>();
     }
 
@@ -304,6 +307,26 @@ public class SpaceShip
         }
     }
 
+    public void spaceShipHitCheck()
+    {
+        if (GameScreen.isPlayerWasHit() == true)
+        {
+            float tempStartTime = System.nanoTime();
+            float tempElapsedTime = 0;
+            for (int i = 0; tempElapsedTime < 3; i = (int) (i + (System.nanoTime() - tempStartTime)))
+            {
+                if (SpaceGame.gameManager.getElapsedTime() % 1 == 0)
+                {
+                    tempElapsedTime++;
+                    invincibleTime++;
+                }
+            }
+        }
+        health--;
+        invincibleTime = 0;
+        GameScreen.setPlayerWasHit(false);
+    }
+
     public ShapeRenderer getTriangle() {
         return ship;
     }
@@ -393,6 +416,26 @@ public class SpaceShip
     {
         this.bulletYSpeed = bulletYSpeed;
     }
+    public int getHealth()
+    {
+        return health;
+    }
+
+    public void setHealth(int health)
+    {
+        this.health = health;
+    }
+
+    public int getInvincibleTime()
+    {
+        return invincibleTime;
+    }
+
+    public void setInvincibleTime(int invincibleTime)
+    {
+        this.invincibleTime = invincibleTime;
+    }
+
     //Class that controls how bullets function. Vector2 is used to calculate its position. Currently ShapeRenderer is
     //used to render the actual bullet. A sprite will be used in the future, as well as changing the ShapeRenderer to
     //an actual sprite.
