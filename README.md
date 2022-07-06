@@ -1,5 +1,5 @@
 # simpleSpaceGame
-How do I use this
+A simple top down shooter game.
 
 Im honestly surprised you are here, well while you are here I might as well explain some things.
 This is a unnamed top down shooter game. I am currently using Java with LibGDX to get more comfortable with game design.
