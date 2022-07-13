@@ -40,7 +40,8 @@ public class SpaceShip
     float bulletYPosition;
     float bulletXSpeed = 3;
     float bulletYSpeed = 4;
-    float shipShootRate = 4 * Gdx.graphics.getDeltaTime();
+    float shipShootRate;
+    float shootDelayInMilliseconds = 100000000;
     Vector2 position;
     long lastDropTime;
     static Array<Bullet> bullets;
@@ -57,6 +58,7 @@ public class SpaceShip
         spaceShipPositionX = 200;
         spaceShipPositionY = 100;
         health = 3;
+        shipShootRate = SpaceGame.gameManager.getCurrentTime();
         bullets = new Array<Bullet>();
     }
 
@@ -276,8 +278,9 @@ public class SpaceShip
     //See the class Bullet
     public void shipShooting()
     {
-        if(Gdx.input.isKeyPressed(Input.Keys.F) )
+        if(Gdx.input.isKeyPressed(Input.Keys.F) && SpaceGame.gameManager.getCurrentTime() - shipShootRate > shootDelayInMilliseconds)
         {
+            shipShootRate = SpaceGame.gameManager.getCurrentTime();
             Bullet b = new Bullet();
             b.position.set(pointerPositionX, pointerPositionY);
             bullets.add(b);
@@ -449,7 +452,7 @@ public class SpaceShip
         Bullet()
         {
             position = new Vector2();
-            velocity = 20f;
+            velocity = 13f;
             bulletCircle = new ShapeRenderer();
             bulletDirection = shipDirection;
         }

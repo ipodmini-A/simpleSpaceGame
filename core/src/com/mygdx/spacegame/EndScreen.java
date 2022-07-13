@@ -47,6 +47,7 @@ public class EndScreen extends ScreenAdapter {
             game.batch.begin();
             game.font.draw(game.batch, "You lose!", Gdx.graphics.getWidth() * .25f, Gdx.graphics.getHeight() * .75f);
             game.font.draw(game.batch, "Press enter to restart.", Gdx.graphics.getWidth() * .25f, Gdx.graphics.getHeight() * .25f);
+            SpaceGame.gameManager.setStages(1);
             game.batch.end();
         }else
         {

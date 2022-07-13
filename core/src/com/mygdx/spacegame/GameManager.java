@@ -42,7 +42,7 @@ public class GameManager
 
     public float getElapsedTime()
     {
-        elapsedTime = TimeUnit.SECONDS.convert((long) (getCurrentTime() - getStartTime()), TimeUnit.NANOSECONDS);
+        elapsedTime = TimeUnit.MILLISECONDS.convert((long) (getCurrentTime() - getStartTime()), TimeUnit.NANOSECONDS);
         return elapsedTime ;
     }
 
